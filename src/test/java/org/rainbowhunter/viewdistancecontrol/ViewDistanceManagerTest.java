@@ -130,6 +130,16 @@ class ViewDistanceManagerTest {
     }
 
     @Test
+    void afkBypass_usesNormalDistanceWhileAfk() {
+        when(player.hasPermission("viewdistancecontrol.afkbypass")).thenReturn(true);
+        when(player.getEffectivePermissions()).thenReturn(Set.of(
+                perm("viewdistancecontrol.default.12")
+        ));
+        manager.setAfk(playerId, true);
+        verify(player).setViewDistance(12);
+    }
+
+    @Test
     void removePlayer_clearsAfkState() {
         manager.setAfk(playerId, true);
         manager.removePlayer(playerId);

@@ -23,7 +23,8 @@ public class ViewDistanceManager {
     }
 
     public void applyViewDistance(Player player) {
-        boolean isAfk = afkPlayers.contains(player.getUniqueId());
+        boolean isAfk = afkPlayers.contains(player.getUniqueId())
+                && !player.hasPermission("viewdistancecontrol.afkbypass");
         int distance;
 
         if (isAfk && config.isAfkEnabled()) {
@@ -71,9 +72,7 @@ public class ViewDistanceManager {
     private void notifyPlayer(Player player, int distance) {
         String raw = config.getNotifyMessage()
                 .replace("%viewdistancecontrol_distance%", String.valueOf(distance));
-        if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
-            raw = PlaceholderAPI.setPlaceholders(player, raw);
-        }
+        raw = PlaceholderAPI.setPlaceholders(player, raw);
         player.sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize(raw));
     }
 

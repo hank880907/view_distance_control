@@ -8,7 +8,6 @@ authors:
 depend:
   - LuckPerms
   - Essentials
-softdepend:
   - PlaceholderAPI
 
 commands:
@@ -28,4 +27,7 @@ permissions:
     default: false
   viewdistancecontrol.afk.*:
     description: Wildcard for AFK view distance nodes
+    default: false
+  viewdistancecontrol.afkbypass:
+    description: Bypasses AFK view distance reduction
     default: false

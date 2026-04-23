@@ -6,7 +6,7 @@ PaperMC plugin for per-player view distance control via LuckPerms permission nod
 
 - Package: `org.rainbowhunter.viewdistancecontrol`
 - Target: PaperMC 1.21.11, Java 21, Gradle (Kotlin DSL)
-- Hard dependencies: LuckPerms, EssentialsX
+- Hard dependencies: LuckPerms, EssentialsX, PlaceholderAPI
 
 ## Features
 
@@ -14,7 +14,6 @@ PaperMC plugin for per-player view distance control via LuckPerms permission nod
 - AFK view distance via EssentialsX `AfkStatusChangeEvent`, toggleable in config.
 - Reacts dynamically to LuckPerms permission changes and `/vdc reload`.
 - Does NOT modify simulation distance.
-- Placeholder API integration.
 
 ## Permission Nodes
 
@@ -24,6 +23,7 @@ PaperMC plugin for per-player view distance control via LuckPerms permission nod
 | `viewdistancecontrol.afk.<N>` | AFK view distance; highest N wins |
 | `viewdistancecontrol.reload` | Allows `/vdc reload` |
 | `viewdistancecontrol.check` | Allows `/vdc check <player>` |
+| `viewdistancecontrol.afkbypass` | Allows player to bypass afk view distance |
 
 ## Config (`config.yml`)
 
@@ -54,4 +54,4 @@ event delivery, EssentialsX AFK events, or chunk loading — verify those on a r
 
 - PaperMC API only. No NMS.
 - No emojis. Short comments only.
-- Keep it simple.
+- Keep it simple and concise.
