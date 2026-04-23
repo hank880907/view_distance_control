@@ -15,6 +15,15 @@ PaperMC plugin for per-player view distance control via LuckPerms permission nod
 - Reacts dynamically to LuckPerms permission changes and `/vdc reload`.
 - Does NOT modify simulation distance.
 
+## View Distance API
+
+The plugin uses `Player.setSendViewDistance(int)` exclusively — never `Player.setViewDistance(int)`.
+
+- `setViewDistance` controls how many chunks the **server loads** for a player. Reducing it causes chunks to unload.
+- `setSendViewDistance` controls how many loaded chunks are **transmitted to the client**. Chunks beyond the send distance remain loaded on the server.
+
+This means the effective per-player view distance is capped by the server's global `view-distance` in `server.properties`. Values configured above that cap silently clamp to the server's loaded radius. This is intentional: the plugin controls what players *see*, not what the server loads.
+
 ## Permission Nodes
 
 | Node                              | Purpose                                   |

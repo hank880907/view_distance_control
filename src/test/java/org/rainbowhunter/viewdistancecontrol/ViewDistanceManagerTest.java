@@ -35,7 +35,7 @@ class ViewDistanceManagerTest {
         player = mock(Player.class);
         when(player.getUniqueId()).thenReturn(playerId);
         when(player.getEffectivePermissions()).thenReturn(Set.of());
-        when(player.getViewDistance()).thenReturn(10);
+        when(player.getSendViewDistance()).thenReturn(10);
 
         bukkit = mockStatic(Bukkit.class);
         bukkit.when(() -> Bukkit.getPlayer(playerId)).thenReturn(player);
@@ -49,7 +49,7 @@ class ViewDistanceManagerTest {
     @Test
     void noPermission_usesConfigDefault() {
         manager.applyViewDistance(player);
-        verify(player).setViewDistance(10);
+        verify(player).setSendViewDistance(10);
     }
 
     @Test
@@ -58,7 +58,7 @@ class ViewDistanceManagerTest {
                 perm("viewdistancecontrol.default.12")
         ));
         manager.applyViewDistance(player);
-        verify(player).setViewDistance(12);
+        verify(player).setSendViewDistance(12);
     }
 
     @Test
@@ -69,7 +69,7 @@ class ViewDistanceManagerTest {
                 perm("viewdistancecontrol.default.12")
         ));
         manager.applyViewDistance(player);
-        verify(player).setViewDistance(16);
+        verify(player).setSendViewDistance(16);
     }
 
     @Test
@@ -78,13 +78,13 @@ class ViewDistanceManagerTest {
                 new PermissionAttachmentInfo(player, "viewdistancecontrol.default.12", null, false)
         ));
         manager.applyViewDistance(player);
-        verify(player).setViewDistance(10);
+        verify(player).setSendViewDistance(10);
     }
 
     @Test
     void afkPlayer_usesAfkConfigDefault() {
         manager.setAfk(playerId, true);
-        verify(player).setViewDistance(4);
+        verify(player).setSendViewDistance(4);
     }
 
     @Test
@@ -93,7 +93,7 @@ class ViewDistanceManagerTest {
                 perm("viewdistancecontrol.afk.2")
         ));
         manager.setAfk(playerId, true);
-        verify(player).setViewDistance(2);
+        verify(player).setSendViewDistance(2);
     }
 
     @Test
@@ -103,7 +103,7 @@ class ViewDistanceManagerTest {
                 perm("viewdistancecontrol.afk.6")
         ));
         manager.setAfk(playerId, true);
-        verify(player).setViewDistance(6);
+        verify(player).setSendViewDistance(6);
     }
 
     @Test
@@ -113,7 +113,7 @@ class ViewDistanceManagerTest {
                 perm("viewdistancecontrol.default.12")
         ));
         manager.setAfk(playerId, true);
-        verify(player).setViewDistance(12);
+        verify(player).setSendViewDistance(12);
     }
 
     @Test
@@ -123,10 +123,10 @@ class ViewDistanceManagerTest {
                 perm("viewdistancecontrol.afk.2")
         ));
         manager.setAfk(playerId, true);
-        verify(player).setViewDistance(2);
+        verify(player).setSendViewDistance(2);
 
         manager.setAfk(playerId, false);
-        verify(player).setViewDistance(12);
+        verify(player).setSendViewDistance(12);
     }
 
     @Test
@@ -136,7 +136,7 @@ class ViewDistanceManagerTest {
                 perm("viewdistancecontrol.default.12")
         ));
         manager.setAfk(playerId, true);
-        verify(player).setViewDistance(12);
+        verify(player).setSendViewDistance(12);
     }
 
     @Test
@@ -146,7 +146,7 @@ class ViewDistanceManagerTest {
 
         // After removal, applying distance should use normal (not AFK) distance
         manager.applyViewDistance(player);
-        verify(player, atLeast(1)).setViewDistance(10);
+        verify(player, atLeast(1)).setSendViewDistance(10);
     }
 
     private PermissionAttachmentInfo perm(String node) {

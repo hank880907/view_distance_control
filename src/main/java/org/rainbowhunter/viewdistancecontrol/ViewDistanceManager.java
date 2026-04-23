@@ -35,8 +35,8 @@ public class ViewDistanceManager {
             if (distance < 0) distance = config.getDefaultViewDistance();
         }
 
-        int previous = player.getViewDistance();
-        player.setViewDistance(distance);
+        int previous = player.getSendViewDistance();
+        player.setSendViewDistance(distance);
 
         if (config.isNotifyPlayer() && previous != distance) {
             notifyPlayer(player, distance);
