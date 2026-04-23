@@ -38,7 +38,7 @@ public class VdcPlaceholderExpansion extends PlaceholderExpansion {
     public @Nullable String onPlaceholderRequest(Player player, @NotNull String params) {
         if (player == null) return "";
         if (params.equals("distance")) {
-            return String.valueOf(player.getViewDistance());
+            return String.valueOf(player.getSendViewDistance());
         }
         return null;
     }

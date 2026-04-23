@@ -63,7 +63,7 @@ public class VdcCommand implements CommandExecutor, TabCompleter {
             return;
         }
         boolean isAfk = viewDistanceManager.isAfk(target.getUniqueId());
-        int distance = target.getViewDistance();
+        int distance = target.getSendViewDistance();
         sender.sendMessage(target.getName() + " view distance: " + distance + (isAfk ? " (AFK)" : ""));
     }
 
