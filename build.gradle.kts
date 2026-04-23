@@ -3,7 +3,7 @@ plugins {
 }
 
 group = "org.rainbowhunter"
-version = "1.0.0"
+version = (project.findProperty("pluginVersion") as String?) ?: "dev"
 
 java {
     toolchain.languageVersion.set(JavaLanguageVersion.of(21))
