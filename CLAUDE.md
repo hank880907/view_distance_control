@@ -42,6 +42,14 @@ notify-message: "Your view distance have been changed to %viewdistancecontrol_di
 - `/vdc reload` — reloads config and reapplies distances to all online players
 - `/vdc check <player>` — shows a player's current view distance
 
+## Testing
+
+Unit tests cover `ViewDistanceManager` logic (permission resolution, AFK switching, config fallback).
+Run with: `./gradlew test` — report at `build/reports/tests/test/index.html`.
+
+Unit tests use JUnit 5 + Mockito (with static mocking for `Bukkit`). They do **not** cover LuckPerms
+event delivery, EssentialsX AFK events, or chunk loading — verify those on a real server.
+
 ## Code Rules
 
 - PaperMC API only. No NMS.
