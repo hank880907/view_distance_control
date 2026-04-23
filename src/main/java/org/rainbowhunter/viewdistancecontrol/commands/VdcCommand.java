@@ -6,8 +6,8 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 import org.rainbowhunter.viewdistancecontrol.ConfigManager;
-import org.rainbowhunter.viewdistancecontrol.ViewDistanceControl;
 import org.rainbowhunter.viewdistancecontrol.ViewDistanceManager;
 
 import java.util.ArrayList;
@@ -15,18 +15,16 @@ import java.util.List;
 
 public class VdcCommand implements CommandExecutor, TabCompleter {
 
-    private final ViewDistanceControl plugin;
     private final ConfigManager configManager;
     private final ViewDistanceManager viewDistanceManager;
 
-    public VdcCommand(ViewDistanceControl plugin, ConfigManager configManager, ViewDistanceManager viewDistanceManager) {
-        this.plugin = plugin;
+    public VdcCommand(ConfigManager configManager, ViewDistanceManager viewDistanceManager) {
         this.configManager = configManager;
         this.viewDistanceManager = viewDistanceManager;
     }
 
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String @NotNull [] args) {
         if (args.length == 0) {
             sender.sendMessage("Usage: /vdc <reload|check <player>>");
             return true;
@@ -66,12 +64,11 @@ public class VdcCommand implements CommandExecutor, TabCompleter {
         }
         boolean isAfk = viewDistanceManager.isAfk(target.getUniqueId());
         int distance = target.getViewDistance();
-        sender.sendMessage(target.getName() + " | view distance: " + distance
-                + " | AFK: " + isAfk);
+        sender.sendMessage(target.getName() + " view distance: " + distance + (isAfk ? " (AFK)" : ""));
     }
 
     @Override
-    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+    public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, @NotNull String @NotNull [] args) {
         List<String> completions = new ArrayList<>();
         if (args.length == 1) {
             if ("reload".startsWith(args[0].toLowerCase())) completions.add("reload");

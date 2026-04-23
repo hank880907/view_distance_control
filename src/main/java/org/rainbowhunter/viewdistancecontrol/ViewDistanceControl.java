@@ -1,6 +1,7 @@
 package org.rainbowhunter.viewdistancecontrol;
 
 import net.luckperms.api.LuckPerms;
+import org.bukkit.command.PluginCommand;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.rainbowhunter.viewdistancecontrol.commands.VdcCommand;
@@ -10,13 +11,12 @@ import org.rainbowhunter.viewdistancecontrol.listeners.PlayerListener;
 
 public class ViewDistanceControl extends JavaPlugin {
 
-    private ConfigManager configManager;
-    private ViewDistanceManager viewDistanceManager;
+    private LuckPermsListener luckPermsListener;
 
     @Override
     public void onEnable() {
         saveDefaultConfig();
-        configManager = new ConfigManager(this);
+        ConfigManager configManager = new ConfigManager(this);
 
         RegisteredServiceProvider<LuckPerms> luckPermsProvider =
                 getServer().getServicesManager().getRegistration(LuckPerms.class);
@@ -27,28 +27,25 @@ public class ViewDistanceControl extends JavaPlugin {
         }
         LuckPerms luckPerms = luckPermsProvider.getProvider();
 
-        viewDistanceManager = new ViewDistanceManager(configManager);
+        ViewDistanceManager viewDistanceManager = new ViewDistanceManager(configManager);
 
         getServer().getPluginManager().registerEvents(new PlayerListener(viewDistanceManager), this);
         getServer().getPluginManager().registerEvents(new AfkListener(viewDistanceManager), this);
-        new LuckPermsListener(this, luckPerms, viewDistanceManager).register();
+        luckPermsListener = new LuckPermsListener(this, luckPerms, viewDistanceManager);
+        luckPermsListener.register();
 
-        VdcCommand cmd = new VdcCommand(this, configManager, viewDistanceManager);
-        getCommand("vdc").setExecutor(cmd);
-        getCommand("vdc").setTabCompleter(cmd);
+        VdcCommand cmd = new VdcCommand(configManager, viewDistanceManager);
+        PluginCommand vdc = getCommand("vdc");
+        if (vdc != null) {
+            vdc.setExecutor(cmd);
+            vdc.setTabCompleter(cmd);
+        }
 
         new VdcPlaceholderExpansion(this).register();
     }
 
     @Override
     public void onDisable() {
-    }
-
-    public ConfigManager getConfigManager() {
-        return configManager;
-    }
-
-    public ViewDistanceManager getViewDistanceManager() {
-        return viewDistanceManager;
+        if (luckPermsListener != null) luckPermsListener.unregister();
     }
 }

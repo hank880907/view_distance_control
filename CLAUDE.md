@@ -17,13 +17,13 @@ PaperMC plugin for per-player view distance control via LuckPerms permission nod
 
 ## Permission Nodes
 
-| Node | Purpose |
-|------|---------|
-| `viewdistancecontrol.default.<N>` | Normal view distance; highest N wins |
-| `viewdistancecontrol.afk.<N>` | AFK view distance; highest N wins |
-| `viewdistancecontrol.reload` | Allows `/vdc reload` |
-| `viewdistancecontrol.check` | Allows `/vdc check <player>` |
-| `viewdistancecontrol.afkbypass` | Allows player to bypass afk view distance |
+| Node                              | Purpose                                   |
+|-----------------------------------|-------------------------------------------|
+| `viewdistancecontrol.default.<N>` | Normal view distance; highest N wins      |
+| `viewdistancecontrol.afk.<N>`     | AFK view distance; highest N wins         |
+| `viewdistancecontrol.reload`      | Allows `/vdc reload`                      |
+| `viewdistancecontrol.check`       | Allows `/vdc check <player>`              |
+| `viewdistancecontrol.afkbypass`   | Allows player to bypass afk view distance |
 
 ## Config (`config.yml`)
 
@@ -55,3 +55,5 @@ event delivery, EssentialsX AFK events, or chunk loading — verify those on a r
 - PaperMC API only. No NMS.
 - No emojis. Short comments only.
 - Keep it simple and concise.
+- Fix all IDE warnings when it is possible and appropriate.
+- Always run the unit test and build to verify the project works whenever the code is changed.
