@@ -33,3 +33,4 @@ jobs:
         with:
           files: build/libs/ViewDistanceControl-${{ env.VERSION }}.jar
           generate_release_notes: true
+          body_path: RELEASE_NOTES.md
