@@ -1,0 +1,29 @@
+name: ViewDistanceControl
+version: '${version}'
+main: org.rainbowhunter.viewdistancecontrol.ViewDistanceControl
+api-version: '1.21'
+description: Per-player view distance control via LuckPerms
+authors:
+  - RainbowHunter
+depend:
+  - LuckPerms
+  - Essentials
+
+commands:
+  vdc:
+    description: View Distance Control
+    usage: /vdc <reload|check <player>>
+
+permissions:
+  viewdistancecontrol.reload:
+    description: Allows reloading the plugin config
+    default: op
+  viewdistancecontrol.check:
+    description: Allows checking a player's view distance
+    default: op
+  viewdistancecontrol.default.*:
+    description: Wildcard for normal view distance nodes
+    default: false
+  viewdistancecontrol.afk.*:
+    description: Wildcard for AFK view distance nodes
+    default: false
