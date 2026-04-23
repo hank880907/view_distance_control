@@ -14,6 +14,7 @@ PaperMC plugin for per-player view distance control via LuckPerms permission nod
 - AFK view distance via EssentialsX `AfkStatusChangeEvent`, toggleable in config.
 - Reacts dynamically to LuckPerms permission changes and `/vdc reload`.
 - Does NOT modify simulation distance.
+- Placeholder API integration.
 
 ## Permission Nodes
 
@@ -27,9 +28,13 @@ PaperMC plugin for per-player view distance control via LuckPerms permission nod
 ## Config (`config.yml`)
 
 ```yaml
-default-view-distance: 10
-default-afk-view-distance: 4
-afk-view-distance-enable: true
+default-view-distance: 10       # default view distance if the permission node is not set.
+default-afk-view-distance: 4    # default afk view distance if the permission node is not set.
+afk-view-distance-enable: true  # enable afk view distance.
+notify-player: false            # notify player when their view distance changes.
+
+# The message to sent to player when their view distance changes.
+notify-message: "Your view distance have been changed to %viewdistancecontrol_distance%"
 ```
 
 ## Commands

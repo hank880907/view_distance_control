@@ -8,6 +8,8 @@ authors:
 depend:
   - LuckPerms
   - Essentials
+softdepend:
+  - PlaceholderAPI
 
 commands:
   vdc:

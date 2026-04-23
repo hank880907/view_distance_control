@@ -1,3 +1,7 @@
-default-view-distance: 10
-default-afk-view-distance: 4
-afk-view-distance-enable: true
+default-view-distance: 10       # default view distance if the permission node is not set.
+default-afk-view-distance: 4    # default afk view distance if the permission node is not set.
+afk-view-distance-enable: true  # enable afk view distance.
+notify-player: false            # notify player when their view distance changes.
+
+# Message sent to the player when their view distance changes. Supports & color codes and PlaceholderAPI.
+notify-message: "Your view distance has been changed to %viewdistancecontrol_distance%"

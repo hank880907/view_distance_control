@@ -1,5 +1,7 @@
 package org.rainbowhunter.viewdistancecontrol;
 
+import me.clip.placeholderapi.PlaceholderAPI;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.permissions.PermissionAttachmentInfo;
@@ -32,7 +34,12 @@ public class ViewDistanceManager {
             if (distance < 0) distance = config.getDefaultViewDistance();
         }
 
+        int previous = player.getViewDistance();
         player.setViewDistance(distance);
+
+        if (config.isNotifyPlayer() && previous != distance) {
+            notifyPlayer(player, distance);
+        }
     }
 
     public void applyAll() {
@@ -59,6 +66,15 @@ public class ViewDistanceManager {
 
     public boolean isAfk(UUID uuid) {
         return afkPlayers.contains(uuid);
+    }
+
+    private void notifyPlayer(Player player, int distance) {
+        String raw = config.getNotifyMessage()
+                .replace("%viewdistancecontrol_distance%", String.valueOf(distance));
+        if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
+            raw = PlaceholderAPI.setPlaceholders(player, raw);
+        }
+        player.sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize(raw));
     }
 
     private int getPermissionDistance(Player player, String prefix) {

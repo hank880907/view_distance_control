@@ -7,6 +7,7 @@ A PaperMC plugin that sets per-player view distance via LuckPerms permission nod
 - PaperMC 1.21.11+
 - LuckPerms
 - EssentialsX 2.21.2+
+- PlaceholderAPI (optional)
 
 ## Installation
 
@@ -22,7 +23,11 @@ A PaperMC plugin that sets per-player view distance via LuckPerms permission nod
 default-view-distance: 10       # Fallback view distance
 default-afk-view-distance: 4    # Fallback AFK view distance
 afk-view-distance-enable: true  # Set to false to disable AFK distance reduction
+notify-player: false            # Notify player when their view distance changes
+notify-message: "Your view distance has been changed to %viewdistancecontrol_distance%"
 ```
+
+The `notify-message` supports `&` color codes. If PlaceholderAPI is installed, other PAPI placeholders are also resolved.
 
 ## Permissions
 
@@ -37,6 +42,12 @@ afk-view-distance-enable: true  # Set to false to disable AFK distance reduction
 ```
 lp group vip permission set viewdistancecontrol.default.12 true
 ```
+
+## PlaceholderAPI
+
+| Placeholder | Description |
+|-------------|-------------|
+| `%viewdistancecontrol_distance%` | Player's current view distance |
 
 ## Commands
 

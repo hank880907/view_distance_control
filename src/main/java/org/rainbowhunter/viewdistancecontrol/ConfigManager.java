@@ -8,6 +8,8 @@ public class ConfigManager {
     private int defaultViewDistance;
     private int defaultAfkViewDistance;
     private boolean afkEnabled;
+    private boolean notifyPlayer;
+    private String notifyMessage;
 
     public ConfigManager(JavaPlugin plugin) {
         this.plugin = plugin;
@@ -19,17 +21,14 @@ public class ConfigManager {
         defaultViewDistance = plugin.getConfig().getInt("default-view-distance", 10);
         defaultAfkViewDistance = plugin.getConfig().getInt("default-afk-view-distance", 4);
         afkEnabled = plugin.getConfig().getBoolean("afk-view-distance-enable", true);
+        notifyPlayer = plugin.getConfig().getBoolean("notify-player", false);
+        notifyMessage = plugin.getConfig().getString("notify-message",
+                "Your view distance has been changed to %viewdistancecontrol_distance%");
     }
 
-    public int getDefaultViewDistance() {
-        return defaultViewDistance;
-    }
-
-    public int getDefaultAfkViewDistance() {
-        return defaultAfkViewDistance;
-    }
-
-    public boolean isAfkEnabled() {
-        return afkEnabled;
-    }
+    public int getDefaultViewDistance() { return defaultViewDistance; }
+    public int getDefaultAfkViewDistance() { return defaultAfkViewDistance; }
+    public boolean isAfkEnabled() { return afkEnabled; }
+    public boolean isNotifyPlayer() { return notifyPlayer; }
+    public String getNotifyMessage() { return notifyMessage; }
 }

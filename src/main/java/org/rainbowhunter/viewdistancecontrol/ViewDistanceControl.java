@@ -36,6 +36,11 @@ public class ViewDistanceControl extends JavaPlugin {
         VdcCommand cmd = new VdcCommand(this, configManager, viewDistanceManager);
         getCommand("vdc").setExecutor(cmd);
         getCommand("vdc").setTabCompleter(cmd);
+
+        if (getServer().getPluginManager().isPluginEnabled("PlaceholderAPI")) {
+            new VdcPlaceholderExpansion(this).register();
+            getLogger().info("PlaceholderAPI found. Expansion registered.");
+        }
     }
 
     @Override
