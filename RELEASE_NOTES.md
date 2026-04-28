@@ -1,5 +1,9 @@
 ## What's new
 
+### Bug fix: view distance applied multiple times per permission change
+
+LuckPerms fires `UserDataRecalculateEvent` several times for a single permission mutation (due to internal cache invalidation steps). This caused the view distance notification message to appear multiple times simultaneously. The handler is now debounced so only the final event in each burst takes effect.
+
 ### View distance cap (`viewdistancecontrol.max.<N>`)
 
 You can now cap a player's view distance from above without touching their existing group permissions.
