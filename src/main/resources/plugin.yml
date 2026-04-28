@@ -28,6 +28,9 @@ permissions:
   viewdistancecontrol.afk.*:
     description: Wildcard for AFK view distance nodes
     default: false
+  viewdistancecontrol.max.*:
+    description: Wildcard for view distance cap nodes
+    default: false
   viewdistancecontrol.afkbypass:
     description: Bypasses AFK view distance reduction
     default: false

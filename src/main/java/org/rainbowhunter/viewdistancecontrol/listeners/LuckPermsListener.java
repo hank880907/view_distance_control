@@ -6,7 +6,12 @@ import net.luckperms.api.event.user.UserDataRecalculateEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitTask;
 import org.rainbowhunter.viewdistancecontrol.ViewDistanceManager;
+
+import java.util.Map;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class LuckPermsListener {
 
@@ -14,6 +19,8 @@ public class LuckPermsListener {
     private final LuckPerms luckPerms;
     private final ViewDistanceManager viewDistanceManager;
     private EventSubscription<UserDataRecalculateEvent> subscription;
+    // Debounce: only the last event in a burst of UserDataRecalculateEvents takes effect.
+    private final Map<UUID, BukkitTask> pending = new ConcurrentHashMap<>();
 
     public LuckPermsListener(JavaPlugin plugin, LuckPerms luckPerms, ViewDistanceManager viewDistanceManager) {
         this.plugin = plugin;
@@ -27,13 +34,24 @@ public class LuckPermsListener {
 
     public void unregister() {
         if (subscription != null) subscription.close();
+        pending.values().forEach(BukkitTask::cancel);
+        pending.clear();
     }
 
     private void onUserDataRecalculate(UserDataRecalculateEvent event) {
-        Player player = Bukkit.getPlayer(event.getUser().getUniqueId());
-        if (player != null) {
-            // LuckPerms events fire async; schedule sync to safely call player API
-            Bukkit.getScheduler().runTask(plugin, () -> viewDistanceManager.applyViewDistance(player));
-        }
+        UUID uuid = event.getUser().getUniqueId();
+        Player player = Bukkit.getPlayer(uuid);
+        if (player == null) return;
+
+        // LuckPerms fires this event multiple times per permission change; cancel the
+        // previous pending task so only the final event in the burst applies the distance.
+        BukkitTask old = pending.remove(uuid);
+        if (old != null) old.cancel();
+
+        BukkitTask task = Bukkit.getScheduler().runTask(plugin, () -> {
+            pending.remove(uuid);
+            viewDistanceManager.applyViewDistance(player);
+        });
+        pending.put(uuid, task);
     }
 }
