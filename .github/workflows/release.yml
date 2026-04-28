@@ -40,3 +40,5 @@ jobs:
         with:
           modrinth-id: EI18paZi
           modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
+          loaders: paper
+          game-versions: 1.21.x
