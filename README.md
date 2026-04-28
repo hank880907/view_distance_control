@@ -1,6 +1,7 @@
 # ViewDistanceControl
 
-A PaperMC plugin that sets per-player view distance via LuckPerms permission nodes. Supports a reduced view distance for AFK players via EssentialsX.
+A PaperMC plugin that sets per-player view distance via LuckPerms permission nodes. Supports a reduced view distance for
+AFK players via EssentialsX.
 
 ## Requirements
 
@@ -31,32 +32,36 @@ The `notify-message` supports `&` color codes and other PlaceholderAPI placehold
 
 ## Permissions
 
-| Node | Description |
-|------|-------------|
-| `viewdistancecontrol.default.<N>` | Sets normal view distance to N. Highest granted value wins. |
-| `viewdistancecontrol.afk.<N>` | Sets AFK view distance to N. Highest granted value wins. |
-| `viewdistancecontrol.reload` | Allows `/vdc reload` |
-| `viewdistancecontrol.check` | Allows `/vdc check <player>` |
-| `viewdistancecontrol.afkbypass` | Bypasses AFK view distance reduction |
+| Node                              | Description                                                              |
+|-----------------------------------|--------------------------------------------------------------------------|
+| `viewdistancecontrol.default.<N>` | Sets normal view distance to N. Highest granted value wins.              |
+| `viewdistancecontrol.afk.<N>`     | Sets AFK view distance to N. Highest granted value wins.                 |
+| `viewdistancecontrol.max.<N>`     | Caps the resolved view distance to at most N. Lowest granted value wins. |
+| `viewdistancecontrol.reload`      | Allows `/vdc reload`                                                     |
+| `viewdistancecontrol.check`       | Allows `/vdc check <player>`                                             |
+| `viewdistancecontrol.afkbypass`   | Bypasses AFK view distance reduction                                     |
 
-**Example** — give a group a view distance of 12:
+**Example** — give a VIP group a view distance of 16:
+
 ```
-lp group vip permission set viewdistancecontrol.default.12 true
+lp group vip permission set viewdistancecontrol.default.16 true
+```
+
+**Example** — cap a restricted group to at most 6 chunks, regardless of other groups:
+
+```
+lp group restricted permission set viewdistancecontrol.max.6 true
 ```
 
 ## PlaceholderAPI
 
-| Placeholder | Description |
-|-------------|-------------|
+| Placeholder                      | Description                    |
+|----------------------------------|--------------------------------|
 | `%viewdistancecontrol_distance%` | Player's current view distance |
 
 ## Commands
 
-| Command | Description |
-|---------|-------------|
-| `/vdc reload` | Reloads config and reapplies distances to all online players |
-| `/vdc check <player>` | Shows a player's current view distance and AFK state |
-
-# Disclaimer
-
-This is an AI generated Project. I have reviewed it, but please use it with care.
+| Command               | Description                                                  |
+|-----------------------|--------------------------------------------------------------|
+| `/vdc reload`         | Reloads config and reapplies distances to all online players |
+| `/vdc check <player>` | Shows a player's current view distance and AFK state         |

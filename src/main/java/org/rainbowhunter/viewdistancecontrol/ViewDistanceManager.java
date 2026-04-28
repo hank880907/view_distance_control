@@ -14,6 +14,7 @@ public class ViewDistanceManager {
 
     private static final String DEFAULT_PREFIX = "viewdistancecontrol.default.";
     private static final String AFK_PREFIX = "viewdistancecontrol.afk.";
+    private static final String MAX_PREFIX = "viewdistancecontrol.max.";
 
     private final ConfigManager config;
     private final Set<UUID> afkPlayers = new HashSet<>();
@@ -34,6 +35,9 @@ public class ViewDistanceManager {
             distance = getPermissionDistance(player, DEFAULT_PREFIX);
             if (distance < 0) distance = config.getDefaultViewDistance();
         }
+
+        int cap = getCapDistance(player);
+        if (cap >= 0) distance = Math.min(distance, cap);
 
         int previous = player.getSendViewDistance();
         player.setSendViewDistance(distance);
@@ -89,5 +93,21 @@ public class ViewDistanceManager {
             }
         }
         return highest;
+    }
+
+    // Returns the lowest max.<N> value, or -1 if no cap is set.
+    private int getCapDistance(Player player) {
+        int lowest = -1;
+        for (PermissionAttachmentInfo info : player.getEffectivePermissions()) {
+            if (!info.getValue()) continue;
+            String node = info.getPermission();
+            if (!node.startsWith(MAX_PREFIX)) continue;
+            try {
+                int val = Integer.parseInt(node.substring(MAX_PREFIX.length()));
+                if (lowest < 0 || val < lowest) lowest = val;
+            } catch (NumberFormatException ignored) {
+            }
+        }
+        return lowest;
     }
 }

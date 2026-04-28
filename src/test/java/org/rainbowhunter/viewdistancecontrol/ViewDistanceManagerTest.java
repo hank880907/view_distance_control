@@ -149,6 +149,57 @@ class ViewDistanceManagerTest {
         verify(player, atLeast(1)).setSendViewDistance(10);
     }
 
+    @Test
+    void maxCap_limitsResolvedDistance() {
+        when(player.getEffectivePermissions()).thenReturn(Set.of(
+                perm("viewdistancecontrol.default.16"),
+                perm("viewdistancecontrol.max.8")
+        ));
+        manager.applyViewDistance(player);
+        verify(player).setSendViewDistance(8);
+    }
+
+    @Test
+    void maxCap_doesNotRaiseDistance() {
+        when(player.getEffectivePermissions()).thenReturn(Set.of(
+                perm("viewdistancecontrol.default.4"),
+                perm("viewdistancecontrol.max.12")
+        ));
+        manager.applyViewDistance(player);
+        verify(player).setSendViewDistance(4);
+    }
+
+    @Test
+    void multipleMaxCaps_lowestWins() {
+        when(player.getEffectivePermissions()).thenReturn(Set.of(
+                perm("viewdistancecontrol.default.20"),
+                perm("viewdistancecontrol.max.10"),
+                perm("viewdistancecontrol.max.6")
+        ));
+        manager.applyViewDistance(player);
+        verify(player).setSendViewDistance(6);
+    }
+
+    @Test
+    void maxCap_appliesWhileAfk() {
+        when(player.getEffectivePermissions()).thenReturn(Set.of(
+                perm("viewdistancecontrol.afk.6"),
+                perm("viewdistancecontrol.max.3")
+        ));
+        manager.setAfk(playerId, true);
+        verify(player).setSendViewDistance(3);
+    }
+
+    @Test
+    void maxCap_capsConfigDefaultWhenNoDefaultNode() {
+        // config default is 10, cap is 5 — cap should apply even without a default.<N> node
+        when(player.getEffectivePermissions()).thenReturn(Set.of(
+                perm("viewdistancecontrol.max.5")
+        ));
+        manager.applyViewDistance(player);
+        verify(player).setSendViewDistance(5);
+    }
+
     private PermissionAttachmentInfo perm(String node) {
         return new PermissionAttachmentInfo(player, node, null, true);
     }

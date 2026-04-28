@@ -34,3 +34,9 @@ jobs:
           files: build/libs/ViewDistanceControl-${{ env.VERSION }}.jar
           generate_release_notes: true
           body_path: RELEASE_NOTES.md
+
+      - name: Publish to Modrinth
+        uses: Kir-Antipov/mc-publish@v3.3
+        with:
+          modrinth-id: EI18paZi
+          modrinth-token: ${{ secrets.MODRINTH_TOKEN }}

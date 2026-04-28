@@ -26,13 +26,18 @@ This means the effective per-player view distance is capped by the server's glob
 
 ## Permission Nodes
 
-| Node                              | Purpose                                   |
-|-----------------------------------|-------------------------------------------|
-| `viewdistancecontrol.default.<N>` | Normal view distance; highest N wins      |
-| `viewdistancecontrol.afk.<N>`     | AFK view distance; highest N wins         |
-| `viewdistancecontrol.reload`      | Allows `/vdc reload`                      |
-| `viewdistancecontrol.check`       | Allows `/vdc check <player>`              |
-| `viewdistancecontrol.afkbypass`   | Allows player to bypass afk view distance |
+| Node                              | Purpose                                                        |
+|-----------------------------------|----------------------------------------------------------------|
+| `viewdistancecontrol.default.<N>` | Normal view distance; highest N wins                           |
+| `viewdistancecontrol.afk.<N>`     | AFK view distance; highest N wins                              |
+| `viewdistancecontrol.max.<N>`     | Caps resolved view distance to at most N; lowest N wins        |
+| `viewdistancecontrol.reload`      | Allows `/vdc reload`                                           |
+| `viewdistancecontrol.check`       | Allows `/vdc check <player>`                                   |
+| `viewdistancecontrol.afkbypass`   | Allows player to bypass afk view distance                      |
+
+`max.<N>` is applied after `default.<N>` / `afk.<N>` resolution. It lets a restriction group force a lower
+ceiling without touching other groups. If multiple `max` nodes are present, the lowest (most restrictive) wins.
+The cap also applies to AFK distances.
 
 ## Config (`config.yml`)
 
