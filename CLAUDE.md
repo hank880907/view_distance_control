@@ -48,6 +48,7 @@ The cap also applies to AFK distances.
 default-view-distance: 10       # default view distance if the permission node is not set.
 default-afk-view-distance: 4    # default afk view distance if the permission node is not set.
 afk-view-distance-enable: true  # enable afk view distance.
+afk-distance-delay: 5           # seconds before AFK view distance is applied (0 = immediate).
 notify-player: false            # notify player when their view distance changes.
 
 # The message to sent to player when their view distance changes.

@@ -12,6 +12,7 @@ import org.rainbowhunter.viewdistancecontrol.listeners.PlayerListener;
 public class ViewDistanceControl extends JavaPlugin {
 
     private LuckPermsListener luckPermsListener;
+    private AfkListener afkListener;
 
     @Override
     public void onEnable() {
@@ -30,7 +31,8 @@ public class ViewDistanceControl extends JavaPlugin {
         ViewDistanceManager viewDistanceManager = new ViewDistanceManager(configManager);
 
         getServer().getPluginManager().registerEvents(new PlayerListener(viewDistanceManager), this);
-        getServer().getPluginManager().registerEvents(new AfkListener(viewDistanceManager), this);
+        afkListener = new AfkListener(this, configManager, viewDistanceManager);
+        getServer().getPluginManager().registerEvents(afkListener, this);
         luckPermsListener = new LuckPermsListener(this, luckPerms, viewDistanceManager);
         luckPermsListener.register();
 
@@ -47,5 +49,6 @@ public class ViewDistanceControl extends JavaPlugin {
     @Override
     public void onDisable() {
         if (luckPermsListener != null) luckPermsListener.unregister();
+        if (afkListener != null) afkListener.cleanup();
     }
 }
