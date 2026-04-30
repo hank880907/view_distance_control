@@ -1,5 +1,6 @@
 package org.rainbowhunter.viewdistancecontrol;
 
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class ConfigManager {
@@ -30,6 +31,16 @@ public class ConfigManager {
                 "Your view distance has been changed to %viewdistancecontrol_distance%");
         consoleLog = plugin.getConfig().getBoolean("console-log", false);
         debug = plugin.getConfig().getBoolean("debug", false);
+
+        int serverMax = Bukkit.getServer().getViewDistance();
+        if (defaultViewDistance > serverMax) {
+            plugin.getLogger().warning("default-view-distance (" + defaultViewDistance + ") exceeds server view-distance (" + serverMax + "). Clamping to " + serverMax + ".");
+            defaultViewDistance = serverMax;
+        }
+        if (defaultAfkViewDistance > serverMax) {
+            plugin.getLogger().warning("default-afk-view-distance (" + defaultAfkViewDistance + ") exceeds server view-distance (" + serverMax + "). Clamping to " + serverMax + ".");
+            defaultAfkViewDistance = serverMax;
+        }
     }
 
     public int getDefaultViewDistance() { return defaultViewDistance; }

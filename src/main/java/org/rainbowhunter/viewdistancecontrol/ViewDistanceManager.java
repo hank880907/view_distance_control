@@ -46,6 +46,14 @@ public class ViewDistanceManager {
         int cap = getCapDistance(player);
         if (cap >= 0) distance = Math.min(distance, cap);
 
+        // The default values are clamped at the config manager. if it is still higher than
+        // the cap, it must come from a permission node.
+        int serverMax = Bukkit.getServer().getViewDistance();
+        if (distance > serverMax) {
+            plugin.getLogger().warning("Player " + player.getName() + " has a permission node granting view distance " + distance + " which exceeds server view-distance (" + serverMax + "). Clamping to " + serverMax + ".");
+            distance = serverMax;
+        }
+
         int previous = player.getSendViewDistance();
 
         if (previous != distance) {

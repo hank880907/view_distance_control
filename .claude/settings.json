@@ -1,5 +1,24 @@
 {
   "enabledPlugins": {
     "jdtls-lsp@claude-plugins-official": true
+  },
+  "permissions": {
+    "allow": [
+      "Bash(./gradlew *)",
+      "WebSearch",
+      "Bash(git add *)",
+      "Bash(git commit *)",
+      "Bash(git tag *)",
+      "Bash(git log *)",
+      "Bash(git diff *)",
+      "Edit(/src)",
+      "Edit(/.github)",
+      "Bash(cat *)",
+      "Bash(ls *)",
+      "Bash(find *)"
+    ],
+    "deny": [
+      "Bash(git push *)"
+    ]
   }
 }

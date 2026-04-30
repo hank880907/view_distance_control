@@ -1,9 +1,11 @@
 package org.rainbowhunter.viewdistancecontrol;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Server;
 import org.bukkit.entity.Player;
 import org.bukkit.permissions.PermissionAttachmentInfo;
 import org.bukkit.plugin.java.JavaPlugin;
+import java.util.logging.Logger;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -13,6 +15,7 @@ import java.util.Set;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.contains;
 import static org.mockito.Mockito.*;
 
 class ViewDistanceManagerTest {
@@ -23,6 +26,8 @@ class ViewDistanceManagerTest {
     private Player player;
     private UUID playerId;
     private MockedStatic<Bukkit> bukkit;
+    private Server server;
+    private Logger logger;
 
     @BeforeEach
     void setUp() {
@@ -33,6 +38,8 @@ class ViewDistanceManagerTest {
         when(config.isNotifyPlayer()).thenReturn(false);
 
         plugin = mock(JavaPlugin.class);
+        logger = mock(Logger.class);
+        when(plugin.getLogger()).thenReturn(logger);
         manager = new ViewDistanceManager(plugin, config);
 
         playerId = UUID.randomUUID();
@@ -41,7 +48,11 @@ class ViewDistanceManagerTest {
         when(player.getEffectivePermissions()).thenReturn(Set.of());
         when(player.getSendViewDistance()).thenReturn(0);
 
+        server = mock(Server.class);
+        when(server.getViewDistance()).thenReturn(32);
+
         bukkit = mockStatic(Bukkit.class);
+        bukkit.when(Bukkit::getServer).thenReturn(server);
         bukkit.when(() -> Bukkit.getPlayer(playerId)).thenReturn(player);
     }
 
@@ -215,6 +226,18 @@ class ViewDistanceManagerTest {
         manager.setAfk(playerId, true);
         manager.removePlayer(playerId);
         assertEquals(AfkState.NORMAL, manager.getAfkState(playerId));
+    }
+
+    @Test
+    void serverViewDistance_clampsTooHighPermissionNode() {
+        when(server.getViewDistance()).thenReturn(8);
+        when(player.getEffectivePermissions()).thenReturn(Set.of(
+                perm("viewdistancecontrol.default.16")
+        ));
+        when(player.getName()).thenReturn("TestPlayer");
+        manager.applyViewDistance(player);
+        verify(player).setSendViewDistance(8);
+        verify(logger).warning(contains("TestPlayer"));
     }
 
     private PermissionAttachmentInfo perm(String node) {
