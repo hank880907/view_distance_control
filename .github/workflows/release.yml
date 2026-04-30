@@ -44,3 +44,10 @@ jobs:
           game-versions: 1.21.x
           name: ViewDistanceControl ${{ env.VERSION }}
           changelog-file: RELEASE_NOTES.md
+
+      - name: Sync Modrinth description from README
+        run: |
+          curl -sf -X PATCH "https://api.modrinth.com/v2/project/EI18paZi" \
+            -H "Authorization: ${{ secrets.MODRINTH_TOKEN }}" \
+            -H "Content-Type: application/json" \
+            -d "$(jq -n --rawfile body README.md '{"body": $body}')"
