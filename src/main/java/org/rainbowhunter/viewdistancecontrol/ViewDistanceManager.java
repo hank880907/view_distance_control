@@ -47,10 +47,15 @@ public class ViewDistanceManager {
         if (cap >= 0) distance = Math.min(distance, cap);
 
         int previous = player.getSendViewDistance();
-        player.setSendViewDistance(distance);
 
-        if (config.isNotifyPlayer() && previous != distance) {
-            notifyPlayer(player, distance);
+        if (previous != distance) {
+            player.setSendViewDistance(distance);
+            if (config.isConsoleLog()) {
+                plugin.getLogger().info("View distance of " + player.getName() + " has changed to " + distance + ".");
+            }
+            if (config.isNotifyPlayer()) {
+                notifyPlayer(player, distance);
+            }
         }
     }
 

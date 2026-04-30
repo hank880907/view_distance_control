@@ -11,6 +11,7 @@ public class ConfigManager {
     private int afkDelaySeconds;
     private boolean notifyPlayer;
     private String notifyMessage;
+    private boolean consoleLog;
 
     public ConfigManager(JavaPlugin plugin) {
         this.plugin = plugin;
@@ -26,6 +27,7 @@ public class ConfigManager {
         notifyPlayer = plugin.getConfig().getBoolean("notify-player", false);
         notifyMessage = plugin.getConfig().getString("notify-message",
                 "Your view distance has been changed to %viewdistancecontrol_distance%");
+        consoleLog = plugin.getConfig().getBoolean("console-log", false);
     }
 
     public int getDefaultViewDistance() { return defaultViewDistance; }
@@ -34,4 +36,5 @@ public class ConfigManager {
     public int getAfkDelaySeconds() { return afkDelaySeconds; }
     public boolean isNotifyPlayer() { return notifyPlayer; }
     public String getNotifyMessage() { return notifyMessage; }
+    public boolean isConsoleLog() { return consoleLog; }
 }

@@ -21,3 +21,4 @@ event delivery, EssentialsX AFK events, or chunk loading — verify those on a r
 - Fix all IDE warnings when it is possible and appropriate.
 - Always run the unit test and build to verify the project works whenever the code is changed.
 - When adding new LuckPerms permission node, you also need to update the resources/plugin.yml file.
+- Always keep the README.md file up-to-date.

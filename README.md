@@ -3,17 +3,17 @@
 A PaperMC plugin that sets per-player view distance via LuckPerms permission nodes. Supports a reduced view distance for
 AFK players via EssentialsX.
 
-## Requirements
+This is made for saving server bandwidth for small home servers, thus it is designed to disable
+sending the chunk data to players without unloading the chunks. Chunk loading distance is governed by the
+`simulation-distance` setting in `server.properties` file.
+
+Note that the view distance you set in this plugin is capped by `view-distance` in `server.properties`.
+
+## Dependencies
 
 - LuckPerms
 - EssentialsX
 - PlaceholderAPI
-
-## Installation
-
-1. Build with `./gradlew jar` or download the release jar.
-2. Drop `ViewDistanceControl-*.jar` into your server's `plugins/` folder.
-3. Restart the server.
 
 ## Configuration
 
@@ -26,6 +26,7 @@ afk-view-distance-enable: true  # Set to false to disable AFK distance reduction
 afk-distance-delay: 5           # Seconds before AFK distance applies (0 = immediate)
 notify-player: false            # Notify player when their view distance changes
 notify-message: "Your view distance has been changed to %viewdistancecontrol_distance%"
+console-log: false              # Log view distance changes to the console
 ```
 
 The `notify-message` supports `&` color codes and other PlaceholderAPI placeholders.
@@ -61,8 +62,8 @@ lp group restricted permission set viewdistancecontrol.max.6 true
 
 ## Commands
 
-| Command               | Description                                                  |
-|-----------------------|--------------------------------------------------------------|
-| `/vdc reload`         | Reloads config and reapplies distances to all online players |
-| `/vdc get <player>`   | Shows a player's current view distance and AFK state         |
-| `/vdc list`           | Shows all online players' view distances                     |
+| Command             | Description                                                  |
+|---------------------|--------------------------------------------------------------|
+| `/vdc reload`       | Reloads config and reapplies distances to all online players |
+| `/vdc get <player>` | Shows a player's current view distance and AFK state         |
+| `/vdc list`         | Shows all online players' view distances                     |
