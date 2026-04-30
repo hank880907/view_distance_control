@@ -26,7 +26,7 @@ afk-view-distance-enable: true  # Set to false to disable AFK distance reduction
 afk-distance-delay: 5           # Seconds before AFK distance applies (0 = immediate)
 notify-player: false            # Notify player when their view distance changes
 notify-message: "Your view distance has been changed to %viewdistancecontrol_distance%"
-console-log: false              # Log view distance changes to the console
+console-log: false              # Log view distance changes to the consoledebug: false                    # Log debug messages for diagnosing listener triggers
 ```
 
 The `notify-message` supports `&` color codes and other PlaceholderAPI placeholders.

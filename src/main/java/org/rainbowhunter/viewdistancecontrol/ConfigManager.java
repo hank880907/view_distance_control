@@ -12,6 +12,7 @@ public class ConfigManager {
     private boolean notifyPlayer;
     private String notifyMessage;
     private boolean consoleLog;
+    private boolean debug;
 
     public ConfigManager(JavaPlugin plugin) {
         this.plugin = plugin;
@@ -28,6 +29,7 @@ public class ConfigManager {
         notifyMessage = plugin.getConfig().getString("notify-message",
                 "Your view distance has been changed to %viewdistancecontrol_distance%");
         consoleLog = plugin.getConfig().getBoolean("console-log", false);
+        debug = plugin.getConfig().getBoolean("debug", false);
     }
 
     public int getDefaultViewDistance() { return defaultViewDistance; }
@@ -37,4 +39,5 @@ public class ConfigManager {
     public boolean isNotifyPlayer() { return notifyPlayer; }
     public String getNotifyMessage() { return notifyMessage; }
     public boolean isConsoleLog() { return consoleLog; }
+    public boolean isDebug() { return debug; }
 }
