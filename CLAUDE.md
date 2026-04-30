@@ -35,7 +35,7 @@ the plugin controls what players *see*, not what the server loads.
 | `viewdistancecontrol.afk.<N>`     | AFK view distance; highest N wins                       |
 | `viewdistancecontrol.max.<N>`     | Caps resolved view distance to at most N; lowest N wins |
 | `viewdistancecontrol.reload`      | Allows `/vdc reload`                                    |
-| `viewdistancecontrol.check`       | Allows `/vdc check <player>`                            |
+| `viewdistancecontrol.get`         | Allows `/vdc get <player>` and `/vdc list`              |
 | `viewdistancecontrol.afkbypass`   | Allows player to bypass afk view distance               |
 
 `max.<N>` is applied after `default.<N>` / `afk.<N>` resolution. It lets a restriction group force a lower
@@ -58,7 +58,8 @@ notify-message: "Your view distance have been changed to %viewdistancecontrol_di
 ## Commands
 
 - `/vdc reload` — reloads config and reapplies distances to all online players
-- `/vdc check <player>` — shows a player's current view distance
+- `/vdc get <player>` — shows a player's current view distance
+- `/vdc list` — shows all online players' view distances
 
 ## LuckPerms Event Behavior
 

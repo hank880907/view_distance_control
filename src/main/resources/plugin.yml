@@ -13,14 +13,14 @@ depend:
 commands:
   vdc:
     description: View Distance Control
-    usage: /vdc <reload|check <player>>
+    usage: /vdc <reload|get <player>|list>
 
 permissions:
   viewdistancecontrol.reload:
     description: Allows reloading the plugin config
     default: op
-  viewdistancecontrol.check:
-    description: Allows checking a player's view distance
+  viewdistancecontrol.get:
+    description: Allows viewing a player's view distance
     default: op
   viewdistancecontrol.default.*:
     description: Wildcard for normal view distance nodes

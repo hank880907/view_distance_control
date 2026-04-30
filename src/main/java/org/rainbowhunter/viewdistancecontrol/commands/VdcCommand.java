@@ -26,14 +26,15 @@ public class VdcCommand implements CommandExecutor, TabCompleter {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String @NotNull [] args) {
         if (args.length == 0) {
-            sender.sendMessage("Usage: /vdc <reload|check <player>>");
+            sender.sendMessage("Usage: /vdc <reload|get <player>|list>");
             return true;
         }
 
         switch (args[0].toLowerCase()) {
             case "reload" -> handleReload(sender);
-            case "check" -> handleCheck(sender, args);
-            default -> sender.sendMessage("Unknown subcommand. Usage: /vdc <reload|check <player>>");
+            case "get"    -> handleGet(sender, args);
+            case "list"   -> handleList(sender);
+            default -> sender.sendMessage("Unknown subcommand. Usage: /vdc <reload|get <player>|list>");
         }
         return true;
     }
@@ -48,13 +49,13 @@ public class VdcCommand implements CommandExecutor, TabCompleter {
         sender.sendMessage("ViewDistanceControl config reloaded.");
     }
 
-    private void handleCheck(CommandSender sender, String[] args) {
-        if (!sender.hasPermission("viewdistancecontrol.check")) {
+    private void handleGet(CommandSender sender, String[] args) {
+        if (!sender.hasPermission("viewdistancecontrol.get")) {
             sender.sendMessage("You do not have permission to do this.");
             return;
         }
         if (args.length < 2) {
-            sender.sendMessage("Usage: /vdc check <player>");
+            sender.sendMessage("Usage: /vdc get <player>");
             return;
         }
         Player target = Bukkit.getPlayerExact(args[1]);
@@ -67,13 +68,26 @@ public class VdcCommand implements CommandExecutor, TabCompleter {
         sender.sendMessage(target.getName() + " view distance: " + distance + (isAfk ? " (AFK)" : ""));
     }
 
+    private void handleList(CommandSender sender) {
+        if (!sender.hasPermission("viewdistancecontrol.get")) {
+            sender.sendMessage("You do not have permission to do this.");
+            return;
+        }
+        for (Player p : Bukkit.getOnlinePlayers()) {
+            boolean isAfk = viewDistanceManager.isAfk(p.getUniqueId());
+            int distance = p.getSendViewDistance();
+            sender.sendMessage(p.getName() + " view distance: " + distance + (isAfk ? " (AFK)" : ""));
+        }
+    }
+
     @Override
     public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, @NotNull String @NotNull [] args) {
         List<String> completions = new ArrayList<>();
         if (args.length == 1) {
             if ("reload".startsWith(args[0].toLowerCase())) completions.add("reload");
-            if ("check".startsWith(args[0].toLowerCase())) completions.add("check");
-        } else if (args.length == 2 && args[0].equalsIgnoreCase("check")) {
+            if ("get".startsWith(args[0].toLowerCase()))    completions.add("get");
+            if ("list".startsWith(args[0].toLowerCase()))   completions.add("list");
+        } else if (args.length == 2 && args[0].equalsIgnoreCase("get")) {
             String partial = args[1].toLowerCase();
             for (Player p : Bukkit.getOnlinePlayers()) {
                 if (p.getName().toLowerCase().startsWith(partial)) {
