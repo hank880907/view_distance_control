@@ -5,9 +5,8 @@ AFK players via EssentialsX.
 
 ## Requirements
 
-- PaperMC 1.21.11+
 - LuckPerms
-- EssentialsX 2.21.2+
+- EssentialsX
 - PlaceholderAPI
 
 ## Installation
@@ -24,6 +23,7 @@ AFK players via EssentialsX.
 default-view-distance: 10       # Fallback view distance
 default-afk-view-distance: 4    # Fallback AFK view distance
 afk-view-distance-enable: true  # Set to false to disable AFK distance reduction
+afk-distance-delay: 5           # Seconds before AFK distance applies (0 = immediate)
 notify-player: false            # Notify player when their view distance changes
 notify-message: "Your view distance has been changed to %viewdistancecontrol_distance%"
 ```
@@ -38,7 +38,7 @@ The `notify-message` supports `&` color codes and other PlaceholderAPI placehold
 | `viewdistancecontrol.afk.<N>`     | Sets AFK view distance to N. Highest granted value wins.                 |
 | `viewdistancecontrol.max.<N>`     | Caps the resolved view distance to at most N. Lowest granted value wins. |
 | `viewdistancecontrol.reload`      | Allows `/vdc reload`                                                     |
-| `viewdistancecontrol.check`       | Allows `/vdc check <player>`                                             |
+| `viewdistancecontrol.get`         | Allows `/vdc get <player>` and `/vdc list`                               |
 | `viewdistancecontrol.afkbypass`   | Bypasses AFK view distance reduction                                     |
 
 **Example** — give a VIP group a view distance of 16:
@@ -64,4 +64,5 @@ lp group restricted permission set viewdistancecontrol.max.6 true
 | Command               | Description                                                  |
 |-----------------------|--------------------------------------------------------------|
 | `/vdc reload`         | Reloads config and reapplies distances to all online players |
-| `/vdc check <player>` | Shows a player's current view distance and AFK state         |
+| `/vdc get <player>`   | Shows a player's current view distance and AFK state         |
+| `/vdc list`           | Shows all online players' view distances                     |

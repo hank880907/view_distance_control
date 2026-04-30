@@ -1,17 +1,15 @@
 ## What's new
 
-### Bug fix: view distance applied multiple times per permission change
+### AFK distance delay
 
-LuckPerms fires `UserDataRecalculateEvent` several times for a single permission mutation (due to internal cache invalidation steps). This caused the view distance notification message to appear multiple times simultaneously. The handler is now debounced so only the final event in each burst takes effect.
+A new `afk-distance-delay` config option (default: `5`) delays the AFK view distance reduction by a configurable number
+of seconds after a player goes AFK. Set to `0` for the previous immediate behaviour.
+During the AFK delay window, `/vdc get` now reports the player's real AFK state right away. The output shows
+`(pending AFK)` while the delay is counting down and `(AFK)` once the reduced distance kicks in.
 
-### View distance cap (`viewdistancecontrol.max.<N>`)
+### New commands: `/vdc get` and `/vdc list`
 
-You can now cap a player's view distance from above without touching their existing group permissions.
+`/vdc check <player>` has been renamed to `/vdc get <player>`. A new `/vdc list` command prints the view distance of
+every online player at once, equivalent to running `/vdc get` on each one.
 
-Assign `viewdistancecontrol.max.<N>` to a group and the resolved distance (from `default.<N>` / `afk.<N>` nodes and config defaults) will be clamped to at most `N`. If a player has multiple `max` nodes the lowest value wins (most restrictive). The cap applies in both normal and AFK states.
-
-**Example** — limit a restricted group to at most 6 chunks regardless of other groups:
-
-```
-lp group restricted permission set viewdistancecontrol.max.6 true
-```
+The associated permission node has been renamed from `viewdistancecontrol.check` to `viewdistancecontrol.get`.
