@@ -48,17 +48,22 @@ public class LuckPermsListener {
 
         if (config.isDebug()) plugin.getLogger().info("[DEBUG] LuckPermsListener.onUserDataRecalculate triggered for " + player.getName());
 
-        // LuckPerms fires this event multiple times per permission change; cancel the
-        // previous pending task so only the final event in the burst applies the distance.
-        BukkitTask old = pending.remove(uuid);
-        if (old != null) old.cancel();
+        // LuckPerms fires this event multiple times per permission change from async threads;
+        // synchronize the compound remove→cancel→schedule→put so concurrent events can't both
+        // see an empty map and schedule duplicate tasks.
+        synchronized (pending) {
+            BukkitTask old = pending.remove(uuid);
+            if (old != null) old.cancel();
 
-        BukkitTask task = Bukkit.getScheduler().runTask(plugin, () -> {
-            pending.remove(uuid);
-            if (!player.isOnline()) return;
-            if (config.isDebug()) plugin.getLogger().info("[DEBUG] LuckPermsListener applying view distance for " + player.getName());
-            viewDistanceManager.applyViewDistance(player);
-        });
-        pending.put(uuid, task);
+            BukkitTask task = Bukkit.getScheduler().runTask(plugin, () -> {
+                synchronized (pending) {
+                    pending.remove(uuid);
+                }
+                if (!player.isOnline()) return;
+                if (config.isDebug()) plugin.getLogger().info("[DEBUG] LuckPermsListener applying view distance for " + player.getName());
+                viewDistanceManager.applyViewDistance(player);
+            });
+            pending.put(uuid, task);
+        }
     }
 }
