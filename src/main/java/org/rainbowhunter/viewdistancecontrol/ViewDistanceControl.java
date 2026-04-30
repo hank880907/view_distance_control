@@ -30,8 +30,8 @@ public class ViewDistanceControl extends JavaPlugin {
 
         viewDistanceManager = new ViewDistanceManager(this, configManager);
 
-        getServer().getPluginManager().registerEvents(new PlayerListener(viewDistanceManager), this);
-        getServer().getPluginManager().registerEvents(new AfkListener(viewDistanceManager), this);
+        getServer().getPluginManager().registerEvents(new PlayerListener(this, viewDistanceManager), this);
+        getServer().getPluginManager().registerEvents(new AfkListener(this, viewDistanceManager), this);
         luckPermsListener = new LuckPermsListener(this, luckPerms, viewDistanceManager);
         luckPermsListener.register();
 

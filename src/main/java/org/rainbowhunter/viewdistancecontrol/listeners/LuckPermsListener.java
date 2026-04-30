@@ -43,6 +43,8 @@ public class LuckPermsListener {
         Player player = Bukkit.getPlayer(uuid);
         if (player == null) return;
 
+        plugin.getLogger().info("[DEBUG] LuckPermsListener.onUserDataRecalculate triggered for " + player.getName());
+
         // LuckPerms fires this event multiple times per permission change; cancel the
         // previous pending task so only the final event in the burst applies the distance.
         BukkitTask old = pending.remove(uuid);
@@ -50,6 +52,8 @@ public class LuckPermsListener {
 
         BukkitTask task = Bukkit.getScheduler().runTask(plugin, () -> {
             pending.remove(uuid);
+            if (!player.isOnline()) return;
+            plugin.getLogger().info("[DEBUG] LuckPermsListener applying view distance for " + player.getName());
             viewDistanceManager.applyViewDistance(player);
         });
         pending.put(uuid, task);
