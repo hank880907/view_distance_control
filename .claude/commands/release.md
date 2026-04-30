@@ -20,14 +20,11 @@ Read the full diff for the commit range (`git diff <tag>..HEAD` or `git diff HEA
 
 Write clear, user-facing bullet points (not raw commit messages). One bullet per logical change; combine trivial housekeeping commits.
 
-## Step 3 — Update release_note.md
+## Step 3 — Update RELEASE_NOTES.md
 
-Open `release_note.md` at the project root (create it if absent). Prepend a new section at the top:
+Open `RELEASE_NOTES.md` at the project root (create it if absent). Prepend a new section at the top:
 
 ```
-## [Unreleased]
-_YYYY-MM-DD_
-
 ### Added
 - …
 
@@ -41,7 +38,7 @@ _YYYY-MM-DD_
 - …
 ```
 
-Use today's date. Only include sections that have content. Do not modify any existing sections below the new one.
+Only include sections that have content. Do not modify any existing sections below the new one.
 
 ## Step 4 — Code audit
 

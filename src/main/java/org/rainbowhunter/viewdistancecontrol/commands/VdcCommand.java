@@ -72,7 +72,12 @@ public class VdcCommand implements CommandExecutor, TabCompleter {
             sender.sendMessage("You do not have permission to do this.");
             return;
         }
-        for (Player p : Bukkit.getOnlinePlayers()) {
+        var online = Bukkit.getOnlinePlayers();
+        if (online.isEmpty()) {
+            sender.sendMessage("No players online.");
+            return;
+        }
+        for (Player p : online) {
             sender.sendMessage(distanceMessage(p));
         }
     }

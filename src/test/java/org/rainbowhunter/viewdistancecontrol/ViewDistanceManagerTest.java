@@ -39,7 +39,7 @@ class ViewDistanceManagerTest {
         player = mock(Player.class);
         when(player.getUniqueId()).thenReturn(playerId);
         when(player.getEffectivePermissions()).thenReturn(Set.of());
-        when(player.getSendViewDistance()).thenReturn(10);
+        when(player.getSendViewDistance()).thenReturn(0);
 
         bukkit = mockStatic(Bukkit.class);
         bukkit.when(() -> Bukkit.getPlayer(playerId)).thenReturn(player);

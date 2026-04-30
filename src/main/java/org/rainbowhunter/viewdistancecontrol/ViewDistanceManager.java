@@ -114,10 +114,6 @@ public class ViewDistanceManager {
         return AfkState.NORMAL;
     }
 
-    public boolean isAfk(UUID uuid) {
-        return afkPlayers.contains(uuid);
-    }
-
     public void cleanup() {
         pendingAfkTasks.values().forEach(BukkitTask::cancel);
         pendingAfkTasks.clear();
