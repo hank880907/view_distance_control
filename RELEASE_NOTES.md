@@ -1,9 +1,13 @@
+## overview
+
+This release improves robustness around view distance clamping and fixes two bugs in the LuckPerms listener. A new `debug` config option makes it easier to diagnose when and why listeners fire without having to add temporary logging.
+
 ### Added
-- New `afk-distance-delay` config option (default: `5`) delays AFK view distance reduction by a configurable number of seconds after a player goes AFK. Set to `0` for the previous immediate behaviour.
-- New `console-log` config option (default: `false`) logs view distance changes to the server console.
-- New `/vdc list` command shows every online player's current view distance at once.
+- New `debug` config option (default: `false`) logs when each listener fires, so misfiring or missing events can be diagnosed without touching the code.
 
 ### Changed
-- `/vdc check <player>` renamed to `/vdc get <player>`; the associated permission node is renamed from `viewdistancecontrol.check` to `viewdistancecontrol.get`.
-- `/vdc get` (and `/vdc list`) now show `(pending AFK)` while the AFK delay is counting down, so the real AFK state is visible immediately even before the view distance switches.
-- View distance is now only set on the player when the value actually changes; notifications and console logs are suppressed for no-op updates.
+- Config defaults (`default-view-distance`, `default-afk-view-distance`) and permission-node-granted distances are now clamped to the server's `view-distance` setting, with a warning logged when clamping occurs.
+
+### Fixed
+- Race condition in `LuckPermsListener` debounce logic: concurrent async `UserDataRecalculateEvent` firings could both see an empty pending map and schedule duplicate tasks. The remove→cancel→schedule→put sequence is now synchronized.
+- `LuckPermsListener` no longer applies view distance if the player disconnects between when the event fires and when the scheduled task runs.
