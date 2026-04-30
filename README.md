@@ -1,13 +1,8 @@
-# ViewDistanceControl
+# View Distance Control
 
-A PaperMC plugin that sets per-player view distance via LuckPerms permission nodes. Supports a reduced view distance for
-AFK players via EssentialsX.
+View Distance Control gives different chunk view distances to different groups of players on your server. Assign larger distances as a perk for donors or VIPs, limit guests to save bandwidth, or let the plugin automatically pull back the view distance for AFK players and restore it when they return. Getting started takes a single LuckPerms command per group; players with no matching permission fall back to the defaults in config.
 
-This is made for saving server bandwidth for small home servers, thus it is designed to disable
-sending the chunk data to players without unloading the chunks. Chunk loading distance is governed by the
-`simulation-distance` setting in `server.properties` file.
-
-Note that the view distance you set in this plugin is capped by `view-distance` in `server.properties`.
+> **Note:** This plugin controls how much of the world is *streamed* to each player, not how much the server loads. Players see fewer chunks, but the server still keeps the same area loaded. If you want to reduce server load, lower `simulation-distance` in `server.properties` instead.
 
 ## Dependencies
 
