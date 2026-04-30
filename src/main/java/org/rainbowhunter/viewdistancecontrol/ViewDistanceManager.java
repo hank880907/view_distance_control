@@ -5,10 +5,14 @@ import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.permissions.PermissionAttachmentInfo;
+import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitTask;
 
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class ViewDistanceManager {
 
@@ -16,10 +20,13 @@ public class ViewDistanceManager {
     private static final String AFK_PREFIX = "viewdistancecontrol.afk.";
     private static final String MAX_PREFIX = "viewdistancecontrol.max.";
 
+    private final JavaPlugin plugin;
     private final ConfigManager config;
     private final Set<UUID> afkPlayers = new HashSet<>();
+    private final Map<UUID, BukkitTask> pendingAfkTasks = new ConcurrentHashMap<>();
 
-    public ViewDistanceManager(ConfigManager config) {
+    public ViewDistanceManager(JavaPlugin plugin, ConfigManager config) {
+        this.plugin = plugin;
         this.config = config;
     }
 
@@ -53,6 +60,31 @@ public class ViewDistanceManager {
         }
     }
 
+    public void handleAfkChange(UUID uuid, boolean isAfk) {
+        if (isAfk) {
+            BukkitTask old = pendingAfkTasks.remove(uuid);
+            if (old != null) old.cancel();
+            int delayTicks = config.getAfkDelaySeconds() * 20;
+            if (delayTicks <= 0) {
+                setAfk(uuid, true);
+            } else {
+                BukkitTask task = Bukkit.getScheduler().runTaskLater(plugin, () -> {
+                    pendingAfkTasks.remove(uuid);
+                    Player p = Bukkit.getPlayer(uuid);
+                    if (p != null) setAfk(uuid, true);
+                }, delayTicks);
+                pendingAfkTasks.put(uuid, task);
+            }
+        } else {
+            BukkitTask pending = pendingAfkTasks.remove(uuid);
+            if (pending != null) {
+                pending.cancel();
+            } else {
+                setAfk(uuid, false);
+            }
+        }
+    }
+
     public void setAfk(UUID uuid, boolean afk) {
         if (afk) {
             afkPlayers.add(uuid);
@@ -67,10 +99,23 @@ public class ViewDistanceManager {
 
     public void removePlayer(UUID uuid) {
         afkPlayers.remove(uuid);
+        BukkitTask pending = pendingAfkTasks.remove(uuid);
+        if (pending != null) pending.cancel();
+    }
+
+    public AfkState getAfkState(UUID uuid) {
+        if (afkPlayers.contains(uuid)) return AfkState.AFK;
+        if (pendingAfkTasks.containsKey(uuid)) return AfkState.PENDING;
+        return AfkState.NORMAL;
     }
 
     public boolean isAfk(UUID uuid) {
         return afkPlayers.contains(uuid);
+    }
+
+    public void cleanup() {
+        pendingAfkTasks.values().forEach(BukkitTask::cancel);
+        pendingAfkTasks.clear();
     }
 
     private void notifyPlayer(Player player, int distance) {

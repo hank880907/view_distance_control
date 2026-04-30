@@ -7,6 +7,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+import org.rainbowhunter.viewdistancecontrol.AfkState;
 import org.rainbowhunter.viewdistancecontrol.ConfigManager;
 import org.rainbowhunter.viewdistancecontrol.ViewDistanceManager;
 
@@ -63,9 +64,7 @@ public class VdcCommand implements CommandExecutor, TabCompleter {
             sender.sendMessage("Player not found: " + args[1]);
             return;
         }
-        boolean isAfk = viewDistanceManager.isAfk(target.getUniqueId());
-        int distance = target.getSendViewDistance();
-        sender.sendMessage(target.getName() + " view distance: " + distance + (isAfk ? " (AFK)" : ""));
+        sender.sendMessage(distanceMessage(target));
     }
 
     private void handleList(CommandSender sender) {
@@ -74,10 +73,19 @@ public class VdcCommand implements CommandExecutor, TabCompleter {
             return;
         }
         for (Player p : Bukkit.getOnlinePlayers()) {
-            boolean isAfk = viewDistanceManager.isAfk(p.getUniqueId());
-            int distance = p.getSendViewDistance();
-            sender.sendMessage(p.getName() + " view distance: " + distance + (isAfk ? " (AFK)" : ""));
+            sender.sendMessage(distanceMessage(p));
         }
+    }
+
+    private String distanceMessage(Player player) {
+        AfkState afkState = viewDistanceManager.getAfkState(player.getUniqueId());
+        int distance = player.getSendViewDistance();
+        String suffix = switch (afkState) {
+            case AFK     -> " (AFK)";
+            case PENDING -> " (pending AFK)";
+            case NORMAL  -> "";
+        };
+        return player.getName() + " view distance: " + distance + suffix;
     }
 
     @Override

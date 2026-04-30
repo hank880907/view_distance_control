@@ -3,6 +3,7 @@ package org.rainbowhunter.viewdistancecontrol;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.permissions.PermissionAttachmentInfo;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -11,11 +12,13 @@ import org.mockito.MockedStatic;
 import java.util.Set;
 import java.util.UUID;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
 class ViewDistanceManagerTest {
 
     private ConfigManager config;
+    private JavaPlugin plugin;
     private ViewDistanceManager manager;
     private Player player;
     private UUID playerId;
@@ -29,7 +32,8 @@ class ViewDistanceManagerTest {
         when(config.isAfkEnabled()).thenReturn(true);
         when(config.isNotifyPlayer()).thenReturn(false);
 
-        manager = new ViewDistanceManager(config);
+        plugin = mock(JavaPlugin.class);
+        manager = new ViewDistanceManager(plugin, config);
 
         playerId = UUID.randomUUID();
         player = mock(Player.class);
@@ -198,6 +202,19 @@ class ViewDistanceManagerTest {
         ));
         manager.applyViewDistance(player);
         verify(player).setSendViewDistance(5);
+    }
+
+    @Test
+    void getAfkState_afkWhenApplied() {
+        manager.setAfk(playerId, true);
+        assertEquals(AfkState.AFK, manager.getAfkState(playerId));
+    }
+
+    @Test
+    void removePlayer_getAfkStateReturnsNormal() {
+        manager.setAfk(playerId, true);
+        manager.removePlayer(playerId);
+        assertEquals(AfkState.NORMAL, manager.getAfkState(playerId));
     }
 
     private PermissionAttachmentInfo perm(String node) {
