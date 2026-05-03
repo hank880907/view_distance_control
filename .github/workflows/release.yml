@@ -41,7 +41,7 @@ jobs:
           modrinth-id: EI18paZi
           modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
           loaders: paper
-          game-versions: 1.21.x 26.1.x
+          game-versions: 26.1.x
           name: ViewDistanceControl ${{ env.VERSION }}
           changelog-file: RELEASE_NOTES.md
 
