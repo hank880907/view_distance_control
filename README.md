@@ -1,8 +1,13 @@
 # View Distance Control
 
-View Distance Control gives different chunk view distances to different groups of players on your server. Assign larger distances as a perk for donors or VIPs, limit guests to save bandwidth, or let the plugin automatically pull back the view distance for AFK players and restore it when they return. Getting started takes a single LuckPerms command per group; players with no matching permission fall back to the defaults in config.
+View Distance Control gives different chunk view distances to different groups of players on your server. Assign larger
+distances as a perk for donors or VIPs, limit guests to save bandwidth, or let the plugin automatically pull back the
+view distance for AFK players and restore it when they return. Getting started takes a single LuckPerms command per
+group; players with no matching permission fall back to the defaults in config.
 
-> **Note:** This plugin controls how much of the world is *streamed* to each player, not how much the server loads. Players see fewer chunks, but the server still keeps the same area loaded. If you want to reduce server load, lower `simulation-distance` in `server.properties` instead.
+> **Note:** This plugin controls how much of the world is *streamed* to each player, not how much the server loads.
+> Players see fewer chunks, but the server still keeps the same area loaded. If you want to reduce server load, lower
+`simulation-distance` in `server.properties` instead.
 
 ## Dependencies
 
@@ -49,6 +54,9 @@ lp group vip permission set viewdistancecontrol.default.16 true
 ```
 lp group restricted permission set viewdistancecontrol.max.6 true
 ```
+
+> **Note:** The view distance is capped by `view-distance` in `server.properties`. If a value greater than the
+`view-distance` is set, the `view-distnace` would apply.
 
 ## PlaceholderAPI
 
