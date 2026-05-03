@@ -1,7 +1,7 @@
 name: ViewDistanceControl
 version: '${version}'
 main: org.rainbowhunter.viewdistancecontrol.ViewDistanceControl
-api-version: '1.21'
+api-version: '26.1'
 description: Per-player view distance control via LuckPerms
 authors:
   - RainbowHunter

@@ -15,7 +15,9 @@
       "Edit(/.github)",
       "Bash(cat *)",
       "Bash(ls *)",
-      "Bash(find *)"
+      "Bash(find *)",
+      "WebFetch(domain:papermc.io)",
+      "WebFetch(domain:docs.papermc.io)"
     ],
     "deny": [
       "Bash(git push *)"

@@ -6,7 +6,7 @@ group = "org.rainbowhunter"
 version = (project.findProperty("pluginVersion") as String?) ?: "dev"
 
 java {
-    toolchain.languageVersion.set(JavaLanguageVersion.of(21))
+    toolchain.languageVersion.set(JavaLanguageVersion.of(25))
 }
 
 repositories {
@@ -18,7 +18,7 @@ repositories {
 }
 
 dependencies {
-    compileOnly("io.papermc.paper:paper-api:1.21.11-R0.1-SNAPSHOT")
+    compileOnly("io.papermc.paper:paper-api:26.1.2.build.+")
     compileOnly("net.luckperms:api:5.4")
     compileOnly("net.essentialsx:EssentialsX:2.21.2") {
         exclude(group = "io.papermc.paper")
@@ -29,9 +29,9 @@ dependencies {
         exclude(group = "org.spigotmc")
     }
 
-    testImplementation("io.papermc.paper:paper-api:1.21.11-R0.1-SNAPSHOT")
+    testImplementation("io.papermc.paper:paper-api:26.1.2.build.+")
     testImplementation("org.junit.jupiter:junit-jupiter:5.11.0")
-    testImplementation("org.mockito:mockito-core:5.14.0")
+    testImplementation("org.mockito:mockito-core:5.23.0")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 
